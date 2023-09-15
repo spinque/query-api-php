@@ -1,7 +1,0 @@
-{
-  name: "Spinque query API",
-  description: "Query API for Spinque desk",
-  require: {
-    "cURL"
-  },
-}

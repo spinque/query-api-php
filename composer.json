@@ -1,0 +1,17 @@
+{
+    "name": "spinque/query-api",
+    "description": "PHP query API for spinque desk",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Spinque\\QueryApi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "spinque"
+        }
+    ],
+    "require": {}
+}
