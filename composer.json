@@ -6,7 +6,11 @@
     "autoload": {
         "psr-4": {
             "Spinque\\QueryApi\\": "src/"
-        }
+        },
+        "files": [
+            "src/Types.php",
+            "src/Api.php"
+        ]
     },
     "authors": [
         {
