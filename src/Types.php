@@ -5,10 +5,10 @@ class ApiAuthenticationConfig {
     private string $clientId;
     private string $clientSecret;
 
-    public function __construct($authenticationConfig) {
-        $this->authServer = $authenticationConfig->authSever;
-        $this->clientId = $authenticationConfig->clientId;
-        $this->clientSecret = $authenticationConfig->clientSecret;
+    public function __construct(array $authenticationConfig) {
+        $this->authServer = $authenticationConfig['authServer'];
+        $this->clientId = $authenticationConfig['clientId'];
+        $this->clientSecret = $authenticationConfig['clientSecret'];
     }
 
     public function getAuthServer(): string {
@@ -30,12 +30,12 @@ class ApiConfig {
     private string $workspace;
     private string $api;
     private string $config;
-    private ?ApiAuthenticationConfig $authentication;
+    private ?ApiAuthenticationConfig $apiAuthenticationConfig;
 
     /**
      * @throws Exception
      */
-    function __construct($apiConfig) {
+    function __construct(array $apiConfig) {
         if (!array_key_exists('workspace', $apiConfig)) {
             throw new Exception('A workspace needs to be defined');
         }
@@ -58,12 +58,12 @@ class ApiConfig {
 
         $this->config = 'default';
         if (array_key_exists('config', $apiConfig)) {
-            $this->baseUrl = $apiConfig['config'];
+            $this->config = $apiConfig['config'];
         }
 
-        $this->authentication = null;
+        $this->apiAuthenticationConfig = null;
         if (array_key_exists('authentication', $apiConfig)) {
-            $this->authentication = new ApiAuthenticationConfig($apiConfig['authentication']);
+            $this->apiAuthenticationConfig = new ApiAuthenticationConfig($apiConfig['authentication']);
         }
     }
 
@@ -71,8 +71,8 @@ class ApiConfig {
         return $this->api;
     }
 
-    public function getAuthentication(): ?ApiAuthenticationConfig {
-        return $this->authentication;
+    public function getAuthenticationConfig(): ?ApiAuthenticationConfig {
+        return $this->apiAuthenticationConfig;
     }
 
     public function getBaseUrl(): string {
@@ -94,9 +94,9 @@ class ApiConfig {
 
 class Query {
     private string $endpoint;
-    private array $parameters;
+    private ?array $parameters;
 
-    public function __construct($endpoint, $parameters) {
+    public function __construct(string $endpoint, array $parameters) {
         $this->endpoint = $endpoint;
         $this->parameters = $parameters;
     }
@@ -110,10 +110,7 @@ class Query {
     }
 }
 
-$x = new ApiConfig(
-    [
-        'workspace' => 'demo08',
-        'api' => 'test'
-    ]
-);
-echo $x->getBaseUrl();
+enum ResultType {
+    case RESULTS;
+    case STATISTICS;
+}

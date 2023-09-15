@@ -9,7 +9,7 @@ class Authentication
     private ?string $accessToken;
     private ?int $expires;
 
-    public function __construct($clientID, $clientSecret, $baseUrl, $authServer) {
+    public function __construct(string $clientID, string $clientSecret, string $baseUrl, string $authServer) {
         $this->clientID = $clientID;
         $this->clientSecret = $clientSecret;
         $this->baseUrl = $baseUrl;
@@ -19,6 +19,9 @@ class Authentication
         $this->expires = null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function getAccessToken(): string {
         if ($this->accessToken == null || $this->expires < time()) {
             $this->generateToken();
@@ -34,7 +37,7 @@ class Authentication
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); // do not print to CL
 
-        $url = $this->authServer."/oauth/token";
+        $url = $this->authServer . '/oauth/token';
         curl_setopt($ch, CURLOPT_URL, $url);
 
         $body = [
@@ -52,16 +55,19 @@ class Authentication
 
         $response = curl_exec($ch);
         if ($response === false) {
-            throw new Exception("CURL Error: " . curl_error($ch));
+            curl_close($ch);
+            throw new Exception('CURL Error: ' . curl_error($ch));
         }
 
         $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        $response = json_decode($response);
         if ($responseCode == 200) {
-            $response = json_decode($response);
             $this->accessToken = $response->access_token;
             $this->expires = time() + $response->expires_in;
         } else {
-            throw new Exception("Could not generate token: " . $response);
+            throw new Exception('Could not generate token: ' . $response->error . ' - ' . $response->error_description);
         }
     }
 }
