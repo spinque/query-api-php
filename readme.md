@@ -8,7 +8,7 @@ The Spinque Query API is an HTTP API to retrieve search results for queries. Als
 
 This package can be used through composer. In your `composer.json` file, specify:
 
-```
+```json
   "require": {
       "spinque/query-api": "dev-main"
   }
