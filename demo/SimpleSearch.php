@@ -9,8 +9,8 @@ $api = new Api(
         'api' => 'movies',
         'authentication' => array(
             'authServer' => 'https://login.spinque.com',
-            'clientId' => 'bHul5K4nNCp0MEAcMzGtl8eBCnFL9FTz',
-            'clientSecret' => 'BS1K4LQhgOd0i4CEs8ngjs9_59RZFzWihJAhQ3PVx-KtvHnrBvwm7PC7L83U5Duf',
+            'clientId' => '<CLIENT-ID>',
+            'clientSecret' => '<CLIENT-TOKEN>',
         )
     )
 );
